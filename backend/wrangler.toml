@@ -1,0 +1,15 @@
+name = "simplesecscan-worker"
+main = "src/index.js"
+compatibility_date = "2023-10-30"
+
+[vars]
+GEMINI_API_KEY = "AIzaSyCSL1EfpFIccaKz-DQ-WDgZwNtwS6jF9a8"
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "simplesecscan-uploads"
+
+[[d1_databases]]
+binding = "D1_DB"
+database_name = "simplesecscan-results"
+database_id = "YOUR_D1_DATABASE_ID"

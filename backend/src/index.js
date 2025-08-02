@@ -1,0 +1,103 @@
+export default {
+    async fetch(request, env, ctx) {
+        const url = new URL(request.url);
+        if (url.pathname === '/api/upload') {
+            return await handleUpload(request, env);
+        }
+        return new Response('Not found', { status: 404 });
+    },
+};
+
+async function handleUpload(request, env) {
+    if (request.method !== 'POST') {
+        return new Response('Method not allowed', { status: 405 });
+    }
+
+    try {
+        const formData = await request.formData();
+        const file = formData.get('file');
+
+        if (!file) {
+            return new Response('File not found in form data', { status: 400 });
+        }
+
+        const fileContent = await file.text();
+
+        // Store the file in R2
+        const fileKey = `${Date.now()}-${file.name}`;
+        await env.R2_BUCKET.put(fileKey, fileContent);
+
+        // Analyze the file with Gemini
+        const analysis = await analyzeWithGemini(fileContent, env.GEMINI_API_KEY);
+
+        // Store the analysis in D1
+        const { success } = await env.D1_DB.prepare(
+            'INSERT INTO scan_results (file_key, analysis) VALUES (?, ?)'
+        ).bind(fileKey, JSON.stringify(analysis)).run();
+
+        if (!success) {
+            console.error('Failed to save analysis to D1');
+        }
+
+        return new Response(JSON.stringify(analysis), {
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+    } catch (error) {
+        console.error('Error handling upload:', error);
+        return new Response('Internal server error', { status: 500 });
+    }
+}
+
+async function analyzeWithGemini(code, apiKey) {
+    const prompt = `
+        Analyze the following code for security vulnerabilities. 
+        For each vulnerability found, provide a description, severity (Low, Medium, High, Critical), and a recommendation.
+        Return the results in a JSON array format like this: 
+        [{"vulnerability": "...", "severity": "...", "description": "..."}]
+
+        Code:
+        \
+        ${code}
+        \
+    `;
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "contents": [{ "parts": [{ "text": prompt }] }]
+            }),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Gemini API error! status: ${response.status}, ${errorText}`);
+        }
+
+        const data = await response.json();
+        // It is safer to find the first part that has text and extract it.
+        const analysisText = data.candidates?.[0]?.content?.parts?.find(p => p.text)?.text;
+        if (!analysisText) {
+            console.error("Could not extract analysis text from Gemini response:", JSON.stringify(data, null, 2));
+            throw new Error("Invalid response format from Gemini API.");
+        }
+        // The Gemini API sometimes wraps the JSON in ```json ... ```, so we need to remove that.
+        const cleanedAnalysisText = analysisText.replace(/^```json\\n/, '').replace(/\\n```$/, '');
+        return JSON.parse(cleanedAnalysisText);
+
+    } catch (error) {
+        console.error('Error analyzing with Gemini:', error);
+        // Fallback to a mock response if Gemini fails
+        return [
+            {
+                vulnerability: 'Fallback Response',
+                severity: 'Info',
+                description: 'The AI analysis failed. This is a mock response.',
+            },
+        ];
+    }
+}
