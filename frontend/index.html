@@ -1,32 +1,367 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SimpleSecScan - Cloudflare Edition</title>
+    <title>SimpleSecScan - Enhanced UI</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <style>
+        /* Custom animations and effects */
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #475569);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        .glass-effect {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-glow {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+            to { box-shadow: 0 0 30px rgba(6, 182, 212, 0.6); }
+        }
+        
+        .scan-line {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scan-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3), transparent);
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .drag-active {
+            transform: scale(1.02);
+            border-color: #06b6d4 !important;
+            background-color: rgba(6, 182, 212, 0.1) !important;
+        }
+        
+        .security-pattern {
+            background-image: 
+                radial-gradient(circle at 25px 25px, rgba(6, 182, 212, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75px 75px, rgba(14, 165, 233, 0.1) 2px, transparent 2px);
+            background-size: 100px 100px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold text-center my-8">SimpleSecScan</h1>
-        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md mx-auto">
-            <h2 class="text-2xl font-bold mb-4">Upload a file for vulnerability analysis</h2>
-            <form id="upload-form">
-                <div class="mb-4">
-                    <label for="file-upload" class="block text-gray-700 text-sm font-bold mb-2">Choose a file:</label>
-                    <input type="file" id="file-upload" name="file-upload" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+<body class="gradient-bg text-white font-sans min-h-screen">
+    
+    <!-- Header with enhanced design -->
+    <header class="glass-effect sticky top-0 z-50">
+        <div class="container mx-auto p-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-shield-alt text-white text-lg"></i>
                 </div>
-                <div class="flex items-center justify-between">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Scan File
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                    SimpleSecScan
+                </h1>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-home mr-2"></i>Home
+                </a>
+                <a href="#" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-info-circle mr-2"></i>About
+                </a>
+                <a href="#" class="text-gray-300 hover:text-cyan-400 px-3 py-2 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                    <i class="fas fa-envelope mr-2"></i>Contact
+                </a>
+            </nav>
+            <!-- Mobile menu button -->
+            <button class="md:hidden text-gray-300 hover:text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-8">
+        <!-- Hero section -->
+        <div class="text-center mb-12">
+            <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    Secure Your Digital Assets
+                </span>
+            </h2>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                Advanced vulnerability scanning powered by cutting-edge security algorithms
+            </p>
+        </div>
+
+        <!-- Main upload section with enhanced design -->
+        <div id="upload-section" class="glass-effect rounded-2xl shadow-2xl p-10 max-w-4xl mx-auto security-pattern">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full mb-6 floating">
+                    <i class="fas fa-cloud-upload-alt text-3xl text-white"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-4 text-white">Upload & Scan</h3>
+                <p class="text-gray-300 text-lg">
+                    Drag and drop your files or browse to upload. Our AI-powered engine will analyze for vulnerabilities.
+                </p>
+            </div>
+            
+            <form id="upload-form" class="space-y-6">
+                <div id="drag-drop-area" class="border-4 border-dashed border-gray-500 rounded-2xl p-16 transition-all duration-300 hover:border-cyan-400 hover:bg-gray-800 hover:bg-opacity-50 cursor-pointer group">
+                    <input type="file" id="file-upload" class="hidden">
+                    <label for="file-upload" class="cursor-pointer block">
+                        <div class="text-center">
+                            <div class="mb-6">
+                                <i class="fas fa-cloud-upload-alt text-6xl text-gray-400 group-hover:text-cyan-400 transition-colors duration-300"></i>
+                            </div>
+                            <h4 class="text-2xl font-semibold mb-2 text-white">Drop your files here</h4>
+                            <p class="text-gray-400 mb-2">or</p>
+                            <span class="inline-block bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold px-6 py-3 rounded-full hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-folder-open mr-2"></i>Browse Files
+                            </span>
+                            <p id="file-name" class="text-cyan-400 mt-6 font-medium"></p>
+                        </div>
+                    </label>
+                </div>
+                
+                <!-- File type indicators -->
+                <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-400">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-file-code text-green-400"></i>
+                        <span>Source Code</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-file-archive text-yellow-400"></i>
+                        <span>Archives</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-file-pdf text-red-400"></i>
+                        <span>Documents</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-database text-blue-400"></i>
+                        <span>Databases</span>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 pulse-glow text-lg shadow-xl">
+                        <i class="fas fa-shield-alt mr-3"></i>
+                        Start Security Scan
+                        <i class="fas fa-arrow-right ml-3"></i>
                     </button>
                 </div>
             </form>
         </div>
-        <div id="results-container" class="mt-8"></div>
-    </div>
-    <script src="js/main.js"></script>
+
+        <!-- Enhanced loading spinner -->
+        <div id="loading-spinner" class="hidden text-center my-12">
+            <div class="glass-effect rounded-2xl p-12 max-w-md mx-auto">
+                <div class="scan-line relative">
+                    <i class="fas fa-shield-alt text-6xl text-cyan-400 mb-6"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-white">Scanning in Progress</h3>
+                <p class="text-gray-300 mb-6">Our advanced AI is analyzing your file for potential vulnerabilities...</p>
+                <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+                    <div class="bg-gradient-to-r from-cyan-400 to-blue-500 h-2 rounded-full animate-pulse" style="width: 45%"></div>
+                </div>
+                <p class="text-sm text-gray-400">This may take a few moments</p>
+            </div>
+        </div>
+
+        <!-- Results container placeholder -->
+        <div id="results-container" class="mt-12"></div>
+
+        <!-- Features section -->
+        <section class="mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-white mb-4">Why Choose SimpleSecScan?</h3>
+                <p class="text-gray-300 text-lg">Industry-leading security scanning capabilities</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-effect rounded-xl p-8 text-center hover:transform hover:scale-105 transition-all duration-300">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-bolt text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4 text-white">Lightning Fast</h4>
+                    <p class="text-gray-300">Advanced algorithms provide results in seconds, not hours</p>
+                </div>
+                
+                <div class="glass-effect rounded-xl p-8 text-center hover:transform hover:scale-105 transition-all duration-300">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-eye text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4 text-white">Deep Analysis</h4>
+                    <p class="text-gray-300">Comprehensive vulnerability detection across multiple attack vectors</p>
+                </div>
+                
+                <div class="glass-effect rounded-xl p-8 text-center hover:transform hover:scale-105 transition-all duration-300">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-lock text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4 text-white">Secure & Private</h4>
+                    <p class="text-gray-300">Your files are processed securely and never stored permanently</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced footer -->
+    <footer class="glass-effect mt-20">
+        <div class="container mx-auto p-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-3 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                        SimpleSecScan
+                    </span>
+                </div>
+                <p class="text-gray-400 mb-4">&copy; 2025 SimpleSecScan. All Rights Reserved.</p>
+                <div class="flex justify-center space-x-6 text-sm">
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced drag and drop functionality
+        const dragDropArea = document.getElementById('drag-drop-area');
+        const fileUpload = document.getElementById('file-upload');
+        const fileName = document.getElementById('file-name');
+        const uploadForm = document.getElementById('upload-form');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const uploadSection = document.getElementById('upload-section');
+
+        // Drag and drop events
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dragDropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dragDropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dragDropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        dragDropArea.addEventListener('drop', handleDrop, false);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            dragDropArea.classList.add('drag-active');
+        }
+
+        function unhighlight(e) {
+            dragDropArea.classList.remove('drag-active');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileUpload.files = files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                fileName.textContent = `Selected: ${file.name} (${formatFileSize(file.size)})`;
+                fileName.classList.add('text-cyan-400');
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // File input change event
+        fileUpload.addEventListener('change', function(e) {
+            handleFiles(e.target.files);
+        });
+
+        // Form submission
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (fileUpload.files.length === 0) {
+                alert('Please select a file to scan.');
+                return;
+            }
+
+            // Show loading spinner
+            uploadSection.style.display = 'none';
+            loadingSpinner.classList.remove('hidden');
+
+            // Simulate scanning process (replace with actual implementation)
+            setTimeout(() => {
+                loadingSpinner.classList.add('hidden');
+                uploadSection.style.display = 'block';
+                
+                // Here you would typically show results
+                document.getElementById('results-container').innerHTML = `
+                    <div class="glass-effect rounded-2xl p-8 max-w-4xl mx-auto">
+                        <h3 class="text-2xl font-bold text-green-400 mb-4">
+                            <i class="fas fa-check-circle mr-2"></i>Scan Complete
+                        </h3>
+                        <p class="text-gray-300">Your file has been successfully scanned. Results would appear here.</p>
+                    </div>
+                `;
+            }, 3000);
+        });
+
+        // Mobile menu toggle (basic implementation)
+        document.querySelector('.md\\:hidden button').addEventListener('click', function() {
+            // Add mobile menu toggle functionality here
+            console.log('Mobile menu clicked');
+        });
+    </script>
+    <script src = "./js/main.js"></script>
+    <script src = "./js/script.js"></script>
 </body>
 </html>
