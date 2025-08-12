@@ -68,4 +68,4 @@ async function analyzeWithGemini(code, apiKey) {
     }
 }
 
-module.exports = { analyzeWithGemini, GeminiError };
+export { analyzeWithGemini, GeminiError };

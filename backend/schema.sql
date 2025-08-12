@@ -1,1 +1,0 @@
-CREATE TABLE scan_results (file_key TEXT PRIMARY KEY, analysis TEXT);

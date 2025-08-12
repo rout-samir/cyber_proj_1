@@ -1,0 +1,28 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "cfw-simple-sec-scan",
+	"main": "src/index.js",
+	"compatibility_date": "2025-08-12",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": "./public",
+	},
+	"observability": {
+		"enabled": true,
+	},
+	
+	"d1_databases": [
+		{
+			"binding": "D1_DB",               
+			"database_name": "simplesecscan-results",   
+			"database_id": "66caa7d9-3cc5-4fb0-beef-1f7763460969"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "R2_BUCKET",         
+			"bucket_name": "simplesecscan-uploads",     
+			"preview_bucket_name": "simplesecscan-uploads-preview"
+		}
+	]
+}

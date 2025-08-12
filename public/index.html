@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SecuScan Labs - AI-Powered Code Security Analysis</title>
+		<link rel="icon" type="image/x-icon" href="images/favico.svg">
+		<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body class="text-white font-sans min-h-screen cyber-grid">
+		<!-- Enhanced Header -->
+		<header class="glass-morphism sticky top-0 z-50">
+			<div class="container mx-auto px-6 py-4">
+				<div class="flex justify-between items-center">
+					<div class="flex items-center space-x-4">
+						<div class="relative">
+							<div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl pulse-ring"></div>
+							<div class="relative w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center">
+								<i class="fas fa-shield-halved text-white text-xl"></i>
+							</div>
+						</div>
+						<div>
+							<h1>SecuScan Labs</h1>
+							<p class="text-xs text-gray-400">AI-Powered Code Security Analysis</p>
+						</div>
+					</div>
+
+					<nav class="hidden md:flex items-center space-x-6">
+						<a
+							href="#scan"
+							class="text-gray-300 hover:text-cyan-400 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10"
+						>
+							<i class="fas fa-search mr-2"></i>Scan
+						</a>
+						<a
+							href="#features"
+							class="text-gray-300 hover:text-cyan-400 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10"
+						>
+							<i class="fas fa-star mr-2"></i>Features
+						</a>
+						<div class="flex items-center text-green-400 text-sm">
+							<div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+							Secure & Private
+						</div>
+					</nav>
+
+					<!-- Mobile menu button -->
+					<button class="md:hidden text-gray-300 hover:text-white transition-colors">
+						<i class="fas fa-bars text-xl"></i>
+					</button>
+				</div>
+			</div>
+		</header>
+
+		<main class="container mx-auto px-6 py-12">
+			<!-- Hero Section -->
+			<div class="text-center mb-16">
+				<div class="mb-8">
+					<div class="inline-block relative">
+						<div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full blur-lg opacity-30 animate-pulse"></div>
+						<div
+							class="relative w-24 h-24 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex items-center justify-center floating-icon"
+						>
+							<i class="fas fa-code text-3xl text-white"></i>
+						</div>
+					</div>
+				</div>
+
+				<h2 class="hero-title text-5xl md:text-7xl font-bold mb-8 leading-tight">
+					<span class="font-bold uppercase"> Secure Your Code </span>
+					<br />
+					<span class="text-white text-3xl md:text-4xl font-normal"> with AI-Powered Analysis </span>
+				</h2>
+
+				<p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+					Upload your Java code files and get comprehensive security vulnerability analysis with detailed scoring and recommendations from
+					our advanced AI engine.
+				</p>
+
+				<div class="flex justify-center items-center space-x-8 text-sm text-gray-400">
+					<div class="flex items-center">
+						<i class="fas fa-bolt text-yellow-400 mr-2"></i>
+						Lightning Fast
+					</div>
+					<div class="flex items-center">
+						<i class="fas fa-brain text-purple-400 mr-2"></i>
+						AI-Powered
+					</div>
+					<div class="flex items-center">
+						<i class="fas fa-lock text-green-400 mr-2"></i>
+						100% Secure
+					</div>
+				</div>
+			</div>
+
+			<!-- Main Upload Section -->
+			<section id="scan" class="mb-20">
+				<div class="glass-morphism rounded-3xl shadow-2xl p-10 max-w-5xl mx-auto glow-effect">
+					<div class="text-center mb-10">
+						<div
+							class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl mb-6 floating-icon"
+						>
+							<i class="fas fa-upload text-3xl text-white"></i>
+						</div>
+						<h3 class="text-4xl font-bold mb-4 text-white">Upload & Analyze</h3>
+						<p class="text-gray-300 text-lg max-w-2xl mx-auto">
+							Drop your Java files and get instant security analysis with detailed vulnerability reports
+						</p>
+					</div>
+
+					<form id="upload-form" class="space-y-8">
+						<div
+							id="drag-drop-area"
+							class="border-3 border-dashed border-gray-600 rounded-3xl p-20 transition-all duration-300 hover:border-cyan-400 hover:bg-gray-800 hover:bg-opacity-30 cursor-pointer group scan-animation"
+						>
+							<input type="file" id="file-upload" class="hidden" accept=".java,.js,.py,.cpp,.c,.php,.rb,.go,.rs,.ts" />
+							<label for="file-upload" class="cursor-pointer block">
+								<div class="text-center">
+									<div class="mb-8">
+										<i
+											class="fas fa-cloud-upload-alt text-8xl text-gray-400 group-hover:text-cyan-400 transition-all duration-500 floating-icon"
+										></i>
+									</div>
+									<h4 class="text-3xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors duration-300">
+										Drop Your Code Files Here
+									</h4>
+									<p class="text-gray-400 mb-6 text-lg">or click to browse your files</p>
+
+									<div
+										class="inline-block cyber-button text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 text-lg shadow-xl"
+									>
+										<i class="fas fa-folder-open mr-3"></i>
+										Browse Files
+										<i class="fas fa-arrow-right ml-3"></i>
+									</div>
+
+									<p id="file-name" class="text-cyan-400 mt-8 font-semibold text-lg"></p>
+								</div>
+							</label>
+						</div>
+
+						<!-- Supported File Types -->
+						<div class="bg-gray-800 bg-opacity-50 rounded-2xl p-6">
+							<h5 class="text-center text-gray-300 font-semibold mb-4">Supported File Types</h5>
+							<div class="flex flex-wrap justify-center gap-6 text-sm">
+								<div class="flex items-center space-x-2 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+									<i class="fab fa-java text-orange-400 text-lg"></i>
+									<span class="text-gray-300">Java</span>
+								</div>
+								<div class="flex items-center space-x-2 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+									<i class="fab fa-js-square text-yellow-400 text-lg"></i>
+									<span class="text-gray-300">JavaScript</span>
+								</div>
+								<div class="flex items-center space-x-2 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+									<i class="fab fa-python text-blue-400 text-lg"></i>
+									<span class="text-gray-300">Python</span>
+								</div>
+								<div class="flex items-center space-x-2 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+									<i class="fas fa-code text-purple-400 text-lg"></i>
+									<span class="text-gray-300">C/C++</span>
+								</div>
+								<div class="flex items-center space-x-2 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+									<i class="fab fa-php text-indigo-400 text-lg"></i>
+									<span class="text-gray-300">PHP</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="text-center">
+							<button
+								type="submit"
+								class="cyber-button text-white font-bold py-5 px-16 rounded-2xl transition-all duration-300 transform hover:scale-105 text-xl shadow-2xl glow-effect"
+							>
+								<i class="fas fa-shield-virus mr-4"></i>
+								Start Security Analysis
+								<i class="fas fa-rocket ml-4"></i>
+							</button>
+						</div>
+					</form>
+				</div>
+			</section>
+
+			<!-- Enhanced Loading Section -->
+			<div id="loading-spinner" class="hidden my-16">
+				<div class="glass-morphism rounded-3xl p-12 max-w-lg mx-auto text-center glow-effect">
+					<div class="relative mb-8">
+						<div class="w-24 h-24 border-4 border-gray-600 border-t-cyan-400 rounded-full animate-spin mx-auto"></div>
+						<div class="absolute inset-0 flex items-center justify-center">
+							<i class="fas fa-shield-virus text-2xl text-cyan-400"></i>
+						</div>
+					</div>
+
+					<h3 class="text-3xl font-bold mb-4 text-white">
+						<span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent"> AI Analysis in Progress </span>
+					</h3>
+					<p class="text-gray-300 mb-8 text-lg">Our advanced AI is deep-scanning your code for security vulnerabilities...</p>
+
+					<div class="space-y-4">
+						<div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+							<div
+								id="progress-bar"
+								class="bg-gradient-to-r from-cyan-400 to-blue-500 h-3 rounded-full transition-all duration-500"
+								style="width: 0%"
+							></div>
+						</div>
+						<div class="flex justify-between text-sm text-gray-400">
+							<span id="scan-status">Initializing scan...</span>
+							<span id="scan-percentage">0%</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Results Container -->
+			<div id="results-container" class="mt-16"></div>
+
+			<!-- Features Section -->
+			<section id="features" class="mt-24 mb-20">
+				<div class="text-center mb-16">
+					<h3 class="text-4xl font-bold text-white mb-6">
+						<span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent"> Advanced Security Features </span>
+					</h3>
+					<p class="text-gray-300 text-xl max-w-3xl mx-auto">Cutting-edge technology meets enterprise-grade security analysis</p>
+				</div>
+
+				<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+					<!-- Feature 1 -->
+					<div class="glass-morphism rounded-2xl p-8 text-center glow-effect group">
+						<div
+							class="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
+						>
+							<i class="fas fa-bolt text-3xl text-white"></i>
+						</div>
+						<h4 class="text-2xl font-bold mb-4 text-white">Lightning Speed</h4>
+						<p class="text-gray-300 leading-relaxed">Get comprehensive security analysis in seconds with our optimized AI algorithms</p>
+					</div>
+
+					<!-- Feature 2 -->
+					<div class="glass-morphism rounded-2xl p-8 text-center glow-effect group">
+						<div
+							class="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
+						>
+							<i class="fas fa-brain text-3xl text-white"></i>
+						</div>
+						<h4 class="text-2xl font-bold mb-4 text-white">AI-Powered Detection</h4>
+						<p class="text-gray-300 leading-relaxed">Advanced machine learning models trained on millions of vulnerability patterns</p>
+					</div>
+
+					<!-- Feature 3 -->
+					<div class="glass-morphism rounded-2xl p-8 text-center glow-effect group">
+						<div
+							class="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
+						>
+							<i class="fas fa-chart-line text-3xl text-white"></i>
+						</div>
+						<h4 class="text-2xl font-bold mb-4 text-white">Security Scoring</h4>
+						<p class="text-gray-300 leading-relaxed">Get detailed security scores with actionable insights and recommendations</p>
+					</div>
+
+					<!-- Feature 4 -->
+					<div class="glass-morphism rounded-2xl p-8 text-center glow-effect group">
+						<div
+							class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
+						>
+							<i class="fas fa-lock text-3xl text-white"></i>
+						</div>
+						<h4 class="text-2xl font-bold mb-4 text-white">Privacy First</h4>
+						<p class="text-gray-300 leading-relaxed">Your code is analyzed securely and never stored or shared with third parties</p>
+					</div>
+
+					<!-- Feature 5 -->
+					<div class="glass-morphism rounded-2xl p-8 text-center glow-effect group">
+						<div
+							class="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
+						>
+							<i class="fas fa-bug text-3xl text-white"></i>
+						</div>
+						<h4 class="text-2xl font-bold mb-4 text-white">Multi-Vector Analysis</h4>
+						<p class="text-gray-300 leading-relaxed">Comprehensive scanning across injection, XSS, authentication, and logic flaws</p>
+					</div>
+
+					<!-- Feature 6 -->
+					<div class="glass-morphism rounded-2xl p-8 text-center glow-effect group">
+						<div
+							class="w-20 h-20 bg-gradient-to-br from-indigo-400 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
+						>
+							<i class="fas fa-download text-3xl text-white"></i>
+						</div>
+						<h4 class="text-2xl font-bold mb-4 text-white">Detailed Reports</h4>
+						<p class="text-gray-300 leading-relaxed">Export comprehensive reports with remediation steps and best practices</p>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<!-- Enhanced Footer -->
+		<footer class="glass-morphism mt-24 border-t border-gray-700">
+			<div class="container mx-auto px-6 py-12">
+				<!-- Main Footer Content -->
+				<div class="grid md:grid-cols-3 gap-12 mb-8">
+					<!-- Brand Section -->
+					<div class="text-center md:text-left">
+						<div class="flex items-center justify-center md:justify-start space-x-3 mb-4">
+							<div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center">
+								<i class="fas fa-shield-halved text-white"></i>
+							</div>
+							<span class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+								SecuScan Labs
+							</span>
+						</div>
+						<p class="text-gray-300 leading-relaxed">
+							Advanced AI-powered security analysis for modern development teams. Secure your code, protect your applications.
+						</p>
+					</div>
+
+					<!-- Quick Links -->
+					<div class="text-center md:text-left">
+						<h4 class="text-xl font-bold text-white mb-4">Quick Links</h4>
+						<div class="space-y-3">
+							<a href="#scan" class="block text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+								<i class="fas fa-search mr-2"></i>Security Scanner
+							</a>
+							<a href="#features" class="block text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+								<i class="fas fa-star mr-2"></i>Features
+							</a>
+							<a href="#" class="block text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+								<i class="fas fa-book mr-2"></i>Documentation
+							</a>
+							<a href="#" class="block text-gray-300 hover:text-cyan-400 transition-colors duration-300">
+								<i class="fas fa-headset mr-2"></i>Support
+							</a>
+						</div>
+					</div>
+
+					<!-- Developer Info -->
+					<div class="text-center md:text-left">
+						<h4 class="text-xl font-bold text-white mb-4">Developer</h4>
+						<div class="space-y-4">
+							<div class="flex items-center justify-center md:justify-start space-x-3">
+								<div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center">
+									<i class="fas fa-user text-white text-sm"></i>
+								</div>
+								<span class="text-white font-semibold">Samir Rout</span>
+							</div>
+
+							<div class="flex justify-center md:justify-start space-x-4">
+								<a href="https://github.com/rout-samir" target="_blank" class="group">
+									<div
+										class="w-12 h-12 bg-gray-700 hover:bg-gray-600 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+									>
+										<i class="fab fa-github text-xl text-gray-300 group-hover:text-white"></i>
+									</div>
+								</a>
+								<a href="https://www.linkedin.com/in/samir-rout-92ba192ab/" target="_blank" class="group">
+									<div
+										class="w-12 h-12 bg-blue-600 hover:bg-blue-500 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+									>
+										<i class="fab fa-linkedin-in text-xl text-white"></i>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Bottom Footer -->
+				<div class="border-t border-gray-700 pt-8">
+					<div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+						<div class="text-center md:text-left">
+							<p class="text-gray-400">&copy; 2025 <span class="text-cyan-400 font-semibold">SecuScan Labs</span>. All rights reserved.</p>
+							<p class="text-gray-500 text-sm mt-1">Crafted with <i class="fas fa-heart text-red-400"></i> by Samir Rout</p>
+						</div>
+
+						<div class="flex items-center space-x-6 text-sm">
+							<a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Privacy Policy</a>
+							<a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-300">Terms of Service</a>
+							<a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-300">API Docs</a>
+						</div>
+					</div>
+
+					<!-- Security Badge -->
+					<div class="mt-6 text-center">
+						<div
+							class="inline-flex items-center space-x-2 bg-green-900 bg-opacity-30 border border-green-400 border-opacity-30 rounded-full px-4 py-2"
+						>
+							<div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+							<span class="text-green-400 text-sm font-medium">Secure & Encrypted Analysis</span>
+							<i class="fas fa-shield-check text-green-400"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script src="./scripts.js"></script>
+	</body>
+</html>
