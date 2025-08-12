@@ -91,8 +91,4 @@ Built for speed, scalability, and accessibility, SecuScan Labs is powered by **C
 
 This project is licensed under the [MIT License](LICENSE.md).
 
----
-
----
-
 > **SecuScan Labs** – Build secure software from day one.
