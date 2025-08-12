@@ -1,18 +1,30 @@
+// Define CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+};
+
 export default {
 	async fetch(request, env, ctx) {
+    // Handle CORS preflight requests
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
+    }
+
 		const url = new URL(request.url);
 		if (url.pathname.startsWith('/api/')) {
 			// Handle API requests
 			if (url.pathname === '/api/upload') {
 				return await handleUpload(request, env);
 			}
-			return new Response('API endpoint not found', { status: 404 });
+			return new Response('API endpoint not found', { status: 404, headers: corsHeaders });
 		}
 		// When using the `site` configuration, we should only handle API routes.
 		// The static assets are served automatically by Cloudflare Pages.
 		// We need to return a 404 response here to indicate that the worker
 		// is not handling the request.
-		return new Response('Not found', { status: 404 });
+		return new Response('Not found', { status: 404, headers: corsHeaders });
 	},
 };
 
@@ -26,8 +38,9 @@ class GeminiError extends Error {
 }
 
 async function handleUpload(request, env) {
+    // This check is now partially handled by the main router, but good for defense in depth
     if (request.method !== 'POST') {
-        return new Response('Method not allowed', { status: 405 });
+        return new Response('Method not allowed', { status: 405, headers: corsHeaders });
     }
 
     try {
@@ -35,10 +48,11 @@ async function handleUpload(request, env) {
         const file = formData.get('file');
 
         if (!file) {
-            return new Response('File not found in form data', { status: 400 });
+            return new Response('File not found in form data', { status: 400, headers: corsHeaders });
         }
 
         const fileContent = await file.text();
+        console.log('File content read:', fileContent.substring(0, 100) + '...'); // ADDED LOG
         const fileKey = `${Date.now()}-${file.name}`;
 
         // Store the file in R2 first
@@ -53,14 +67,14 @@ async function handleUpload(request, env) {
                 // Return a specific error response for Gemini API issues
                 return new Response(JSON.stringify({ error: error.message }), {
                     status: error.status,
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 });
             }
             // For other analysis errors, return a generic 500
             console.error('Unhandled analysis error:', error);
             return new Response(JSON.stringify({ error: 'Failed to analyze the file.' }), {
                 status: 500,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             });
         }
 
@@ -76,13 +90,17 @@ async function handleUpload(request, env) {
 
         // Return the successful analysis
         return new Response(JSON.stringify(analysis), {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
 
     } catch (error) {
         // This will catch errors from formData, R2 put, etc.
         console.error('Error handling upload:', error);
-        return new Response('Internal server error', { status: 500 });
+        // MODIFIED: Return the error message to the client
+        return new Response(JSON.stringify({ error: error.message || 'Internal server error' }), {
+            status: 500,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
     }
 }
 
@@ -117,6 +135,7 @@ async function analyzeWithGemini(code, apiKey) {
                 throw new GeminiError('The analysis service is currently overloaded. Please try again later.', 503);
             }
             const errorText = await response.text();
+            console.error(`Gemini API error! status: ${response.status}, ${errorText}`); // ADDED LOG
             throw new Error(`Gemini API error! status: ${response.status}, ${errorText}`);
         }
 

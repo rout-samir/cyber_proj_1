@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy",
-    "start": "wrangler dev"
+    "start": "wrangler dev --assets=./frontend"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

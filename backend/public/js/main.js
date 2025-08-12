@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = fileUpload.files[0];
         const formData = new FormData();
         formData.append('file', file);
+        
 
         resultsContainer.innerHTML = '<p class="text-center">Scanning file...</p>';
 
